@@ -1,0 +1,62 @@
+# robots.txt for ec.chain.bccsw.cn
+# 联合丽格集团品牌加盟官网
+
+User-agent: *
+Allow: /
+Disallow: /tmp/
+Disallow: /*.log$
+Disallow: /images01/
+Crawl-delay: 1
+
+# Sitemap
+Sitemap: https://ec.chain.bccsw.cn/sitemap.xml
+
+# 主要搜索引擎
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+Disallow: /images01/
+
+User-agent: 360Spider
+Allow: /
+
+User-agent: Sogou web spider
+Allow: /
+Disallow: /images01/
+
+User-agent: Yisouspider
+Allow: /
+Disallow: /images01/
+
+User-agent: Sososospider
+Allow: /
+Disallow: /images01/
+
+# 社交媒体爬虫
+User-agent: LinkedInBot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: Facebookexternalhit
+Allow: /
+
+User-agent: Pinterest
+Allow: /
+
+# 阻止抓取备份目录
+Disallow: /backup*
+Disallow: /*-202*
+
+# 允许图片搜索引擎
+User-agent: Googlebot-Image
+Allow: /images01/
+
+User-agent: msnbot
+Allow: /

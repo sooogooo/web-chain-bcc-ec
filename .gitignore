@@ -1,0 +1,9 @@
+backup/
+backup-*/
+*.tar.gz
+*.log
+node_modules/
+.DS_Store
+*.swp
+*.sql
+.placeholder-bak/

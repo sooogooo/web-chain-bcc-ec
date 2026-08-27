@@ -1,0 +1,1072 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <!-- 搜索引擎索引控制 -->
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+
+    <title>联合丽格医疗机构分布地图 - 全国70+直营加盟机构分布查询</title>
+    <meta name="keywords" content="联合丽格地图,医美机构分布,医疗机构分布地图,整形医院分布,联合丽格机构列表,医美诊所地图,医生创业平台,医美品牌机构">
+    <meta name="description" content="联合丽格集团旗下70+直营及加盟医疗机构分布地图。查询北京、上海、深圳、重庆、成都等城市医美机构分布详情。">
+    <meta name="author" content="重庆联合丽格科技有限公司">
+    <meta name="copyright" content="© 2025-2026 重庆联合丽格科技有限公司">
+
+    <!-- 微信分享 meta 标签 -->
+    <meta itemprop="name" content="联合丽格医疗机构分布地图">
+    <meta itemprop="description" content="联合丽格集团旗下70+直营及加盟医疗机构全国分布地图，诚邀医生与机构加盟。">
+    <meta itemprop="image" content="https://ec.chain.bccsw.cn/share-icon-maps.png">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="联合丽格医疗机构分布地图">
+    <meta property="og:description" content="联合丽格集团旗下70+直营及加盟医疗机构全国分布地图。">
+    <meta property="og:image" content="https://ec.chain.bccsw.cn/share-icon-maps.png">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ec.chain.bccsw.cn/bcc-maps.html">
+    <meta property="og:site_name" content="联合丽格集团">
+    <meta property="og:locale" content="zh_CN">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="联合丽格医疗机构分布地图">
+    <meta name="twitter:description" content="查看全国70+直营及加盟机构分布">
+    <meta name="twitter:image" content="https://ec.chain.bccsw.cn/share-icon-maps.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://ec.chain.bccsw.cn/bcc-maps.html">
+
+    <link rel="icon" href="https://docs.bccsw.cn/favicon.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://docs.bccsw.cn/logo.png">
+
+    <!-- 预连接关键资源域名 -->
+    <link rel="preconnect" href="https://docs.bccsw.cn">
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-2S3FKLTRMS"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-2S3FKLTRMS');
+    </script>
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="/tw/bcc-maps-2.html.css">
+
+    <!-- FontAwesome (BootCDN 国内镜像) -->
+    <link href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+    <!-- ECharts -->
+    <script src="/js/echarts.min.js"></script>
+    <script>
+        window.chinaMapLoaded = false;
+        window.mapScript = document.createElement('script');
+        window.mapScript.src = '/js/echarts-china.js';
+        window.mapScript.onload = function() { window.chinaMapLoaded = true; };
+        document.head.appendChild(window.mapScript);
+    </script>
+
+    <!-- 配置 Tailwind 主题色 -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bcc: {
+                            blue: '#0d2c54',
+                            gold: '#f5a623',
+                            navy: '#0a2240'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['system-ui', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', '"Helvetica Neue"', 'Arial', '"Noto Sans"', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            -webkit-font-smoothing: antialiased;
+            scroll-behavior: smooth;
+        }
+        .hero-section {
+            background: #0d2c54;
+            background-image: url('https://ec.chain.bccsw.cn/bcc-001.jpg');
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(10, 34, 64, 0.65);
+        }
+        .glass-card {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+        }
+        .overlay-fixed {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 1000;
+            background: rgba(0,0,0,0.7);
+        }
+        #mobile-menu {
+            transition: transform 0.3s ease;
+            transform: translateY(-100%);
+                    visibility: hidden;
+}
+        #mobile-menu.open {
+            transform: translateY(0);
+                    visibility: visible;
+}
+        .active-scale:active {
+            transform: scale(0.98);
+        }
+        .filter-btn.active {
+            background: #0d2c54;
+            color: white;
+            border-color: #0d2c54;
+        }
+        #china-map {
+            width: 100%;
+            height: 450px;
+        }
+        @media (max-width: 768px) {
+            #china-map { height: 350px; }
+        }
+    </style>
+    <!-- 本地二维码生成(替代境外 qrserver API) -->
+    <script src="/js/qrcode.min.js"></script>
+    <script src="/js/bcc-qr.js"></script>
+</head>
+<body class="bg-slate-50 text-gray-700">
+<!-- WeChat share fallback thumbnail: first image in DOM -->
+<img src="/share-icon-maps.png" width="500" height="500" alt="" aria-hidden="true" style="position:absolute;left:-9999px;top:0;">
+
+    <!-- 导航栏 -->
+    <nav class="fixed w-full z-40 bg-white/95 backdrop-blur-md border-b shadow-sm" id="navbar">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="flex items-center gap-3 active-scale transition">
+                <img src="https://docs.bccsw.cn/logo.png" alt="Logo" class="h-9">
+                <span class="hidden sm:block font-bold text-bcc-blue text-lg">机构分布地图</span>
+            </a>
+            <div class="hidden md:flex items-center gap-6 text-sm font-bold text-gray-600">
+                <a href="#map-section" class="hover:text-bcc-blue transition">分布地图</a>
+                <a href="#list-section" class="hover:text-bcc-blue transition">机构列表</a>
+                <a href="#stats-section" class="hover:text-bcc-blue transition">数据统计</a>
+                <a href="/" class="text-bcc-blue hover:text-bcc-navy transition">返回首页</a>
+                <button onclick="handleShare()" class="text-bcc-blue hover:text-bcc-gold transition active-scale" title="分享">
+                    <i class="fa-solid fa-share-nodes text-lg"></i>
+                </button>
+            </div>
+            <a href="tel:19121428338" class="hidden md:flex border border-bcc-blue text-bcc-blue px-5 py-2 rounded-full font-medium text-sm hover:bg-bcc-blue hover:text-white transition active-scale items-center gap-2">
+                <i class="fa-solid fa-phone text-xs"></i>加盟咨询
+            </a>
+            <button class="md:hidden text-bcc-blue text-xl focus:outline-none active-scale" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars" id="menu-icon"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="absolute top-full left-0 w-full bg-white shadow-lg border-t z-40 md:hidden">
+            <a href="#map-section" onclick="toggleMobileMenu()" class="py-4 px-6 border-b font-bold text-bcc-blue hover:bg-gray-50">分布地图</a>
+            <a href="#list-section" onclick="toggleMobileMenu()" class="py-4 px-6 border-b font-bold text-bcc-blue hover:bg-gray-50">机构列表</a>
+            <a href="#stats-section" onclick="toggleMobileMenu()" class="py-4 px-6 border-b font-bold text-bcc-blue hover:bg-gray-50">数据统计</a>
+            <a href="/" onclick="toggleMobileMenu()" class="py-4 px-6 font-bold text-bcc-blue hover:bg-gray-50">返回首页</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section min-h-[50vh] flex items-center pt-24 relative">
+        <div class="container mx-auto px-6 text-center text-white py-12 relative z-10">
+            <h2 class="text-lg md:text-xl font-light tracking-[0.2em] mb-4">联合丽格集团 BCC</h2>
+            <h1 class="text-3xl md:text-4xl font-bold mb-4">医疗机构分布地图</h1>
+            <p class="max-w-2xl mx-auto text-white/90 text-base md:text-lg font-light mb-8 leading-relaxed">
+                中国领先的医生创业平台，服务覆盖全国多个核心城市<br>
+                整合70+医疗机构，构建高效运营矩阵
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="#map-section" class="bg-white text-bcc-blue px-8 py-3 rounded-lg font-medium hover:bg-gray-100 transition active-scale">
+                    <i class="fa-solid fa-map mr-2"></i>查看地图
+                </a>
+                <a href="#list-section" class="border border-white text-white px-8 py-3 rounded-lg font-medium hover:bg-white/10 transition active-scale">
+                    <i class="fa-solid fa-list mr-2"></i>机构列表
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- 统计卡片 -->
+    <section id="stats-section" class="py-10 bg-white border-b">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="text-center p-5 rounded-lg border border-gray-200">
+                    <div class="text-3xl font-bold text-bcc-blue mb-1" id="total-orgs">0</div>
+                    <div class="text-sm text-gray-600">机构总数（含供应链）</div>
+                </div>
+                <div class="text-center p-5 rounded-lg border border-gray-200">
+                    <div class="text-3xl font-bold text-bcc-blue mb-1" id="direct-orgs">0</div>
+                    <div class="text-sm text-gray-600">直营机构</div>
+                </div>
+                <div class="text-center p-5 rounded-lg border border-gray-200">
+                    <div class="text-3xl font-bold text-bcc-blue mb-1" id="franchise-orgs">0</div>
+                    <div class="text-sm text-gray-600">加盟机构</div>
+                </div>
+                <div class="text-center p-5 rounded-lg border border-gray-200">
+                    <div class="text-3xl font-bold text-bcc-blue mb-1" id="city-count">0</div>
+                    <div class="text-sm text-gray-600">覆盖城市</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 地图展示 -->
+    <section id="map-section" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-black text-bcc-blue">全国机构分布图</h2>
+                <p class="text-gray-500 mt-2 text-sm">点击地图上的城市查看该地区机构详情</p>
+            </div>
+            <div class="glass-card rounded-2xl p-4 md:p-6 shadow-lg">
+                <div id="china-map"></div>
+            </div>
+            <!-- 图例 -->
+            <div class="flex flex-wrap justify-center gap-6 mt-6 text-sm text-gray-600">
+                <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 rounded-full" style="background:#4a6fa5"></span>
+                    <span>直营机构</span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="w-4 h-4 rounded-full" style="background:#a67c52"></span>
+                    <span>加盟机构</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 机构列表 -->
+    <section id="list-section" class="py-12 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl md:text-3xl font-black text-bcc-blue">机构列表查询</h2>
+                <p class="text-gray-500 mt-2 text-sm">按类型和地区筛选，查看机构详细信息</p>
+            </div>
+            <!-- 筛选器 -->
+            <div class="glass-card rounded-2xl p-6 mb-8 shadow-md">
+                <div class="mb-6">
+                    <label class="block text-sm font-bold text-gray-700 mb-3">机构类型</label>
+                    <div class="flex flex-wrap gap-3">
+                        <button class="filter-btn active px-5 py-2 rounded-full border-2 border-gray-200 font-medium text-sm transition" data-type="all" onclick="filterByType('all')">全部机构</button>
+                        <button class="filter-btn px-5 py-2 rounded-full border-2 border-gray-200 font-medium text-sm transition" data-type="direct" onclick="filterByType('direct')">
+                            <span class="w-2 h-2 rounded-full bg-bcc-blue mr-2 inline-block"></span>直营机构
+                        </button>
+                        <button class="filter-btn px-5 py-2 rounded-full border-2 border-gray-200 font-medium text-sm transition" data-type="franchise" onclick="filterByType('franchise')">
+                            <span class="w-2 h-2 rounded-full bg-bcc-gold mr-2 inline-block"></span>加盟机构
+                        </button>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-bold text-gray-700 mb-3">所在地区</label>
+                    <div class="flex flex-wrap gap-3" id="region-filters">
+                        <button class="filter-btn active px-4 py-2 rounded-full border border-gray-200 bg-bcc-blue text-white font-medium text-xs transition" data-region="all" onclick="filterByRegion('all')">全国</button>
+                    </div>
+                </div>
+            </div>
+            <!-- 搜索框 -->
+            <div class="relative mb-8">
+                <input type="text" id="search-input" placeholder="搜索机构名称..."
+                    class="w-full px-5 py-4 pl-12 rounded-xl border border-gray-200 focus:border-bcc-blue focus:outline-none transition"
+                    oninput="searchOrgs(this.value)">
+                <i class="fa-solid fa-search absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"></i>
+            </div>
+            <!-- 机构列表 -->
+            <div id="org-list" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            <div id="no-result" class="hidden text-center py-16">
+                <i class="fa-solid fa-search text-gray-300 text-5xl mb-4"></i>
+                <p class="text-gray-500">未找到相关机构</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 说明区域 -->
+    <section class="py-8 bg-gray-50 border-t">
+        <div class="container mx-auto px-6">
+            <div class="rounded-lg border border-gray-200 p-6 text-sm text-gray-600 leading-relaxed space-y-2 bg-white">
+                <p class="flex items-start gap-2">
+                    <i class="fa-solid fa-circle-info text-gray-400 mt-1 flex-shrink-0"></i>
+                    <span><strong>提示说明：</strong>本地区数据截止时间2026年4月21日，部分机构正在更名中，已实际工商注册名称为准。</span>
+                </p>
+                <p class="flex items-start gap-2">
+                    <i class="fa-solid fa-sync text-gray-400 mt-1 flex-shrink-0"></i>
+                    <span>更多信息陆续更新中，如有疑问请联系区域负责人。</span>
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 联系信息 -->
+    <section class="py-12 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center mb-10">
+                <h2 class="text-2xl md:text-3xl font-bold text-bcc-blue">联系我们</h2>
+                <p class="text-gray-500 mt-2 text-sm">诚邀优秀医生与机构加盟联合丽格</p>
+            </div>
+            <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-200">
+                    <h3 class="font-bold text-bcc-blue text-lg mb-4">华东中心加盟负责人</h3>
+                    <div class="space-y-3 text-sm">
+                        <p class="flex items-center gap-3"><i class="fa-solid fa-user text-bcc-blue w-5"></i>负责人：辛宝音</p>
+                        <p class="flex items-center gap-3"><i class="fa-solid fa-phone text-bcc-blue w-5"></i><a href="tel:19121428338" class="hover:text-bcc-navy">191-2142-8338</a></p>
+                        <p class="flex items-center gap-3"><i class="fa-brands fa-weixin text-bcc-blue w-5"></i>19121428338</p>
+                    </div>
+                </div>
+                <div class="bg-gray-50 rounded-xl p-8 border border-gray-200 flex flex-col items-center justify-center">
+                    <h3 class="font-bold text-bcc-blue text-lg mb-4">微信二维码</h3>
+                    <img src="/qr/xinbaoyin-wechat.png" alt="微信二维码" class="w-40 h-40 object-contain rounded-lg shadow-sm" loading="lazy">
+                    <p class="text-gray-500 text-xs mt-3">扫码添加微信咨询</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-bcc-navy text-white py-8">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-gray-400 text-sm mb-3">联合丽格集团是中国领先的医生创业平台</p>
+            <p class="text-gray-500 text-sm mb-3">© 2025-2026 重庆联合丽格科技有限公司</p>
+            <p class="text-gray-500 text-xs">
+                <a href="https://beian.miit.gov.cn/" target="_blank" class="hover:text-bcc-gold transition">渝 ICP 备 2024023473 号</a>
+            </p>
+        </div>
+    </footer>
+
+    <!-- 分享弹窗 -->
+    <div id="share-overlay" class="overlay-fixed" onclick="closeShare()">
+        <div class="share-modal" onclick="event.stopPropagation()" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:90%;max-width:360px;background:white;border-radius:16px;padding:24px;text-align:center;">
+            <button onclick="closeShare()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 text-xl">&times;</button>
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-brands fa-weixin text-3xl"></i>
+                </div>
+                <h3 class="text-bcc-blue font-bold text-xl mb-2">分享至微信</h3>
+                <img id="share-qr" src="" alt="QR Code" class="w-40 h-40 border-2 border-bcc-gold rounded-lg p-1 mx-auto mb-4">
+                <button onclick="copyLink()" class="w-full bg-bcc-blue text-white py-3 rounded-xl font-bold hover:bg-bcc-navy transition">复制链接</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 机构数据
+        const directOrgs = [
+            { name: "北京卓彦丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "北京米扬丽格医疗美容门诊部有限责任公司", city: "北京", type: "direct", category: "门诊部" },
+            { name: "北京张菡丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "北京小忠丽格医疗美容门诊部有限公司", city: "北京", type: "direct", category: "门诊部" },
+            { name: "大连爱德丽格医疗美容门诊部有限公司", city: "大连", type: "direct", category: "门诊部" },
+            { name: "北京首玺丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "北京爱悦丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "北京常好丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "深圳丽港丽格医疗美容门诊部", city: "深圳", type: "direct", category: "门诊部" },
+            { name: "深圳星荟丽格医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "深圳联合丽格医疗美容门诊部", city: "深圳", type: "direct", category: "门诊部" },
+            { name: "北京泰美丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "重庆曹阳丽格医疗美容门诊部有限公司", city: "重庆", type: "direct", category: "门诊部" },
+            { name: "北京伊芙丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "北京菁品联合丽格口腔诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "深圳香蜜丽格医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "深圳小珂丽格医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "北京联合丽格第一医疗美容医院有限公司", city: "北京", type: "direct", category: "医院" },
+            { name: "北京丰联丽格医疗美容门诊部有限公司", city: "北京", type: "direct", category: "门诊部" },
+            { name: "杭州星光丽格医疗科技有限公司", city: "杭州", type: "direct", category: "门诊部" },
+            { name: "重庆郑荃丽格周周医疗美容有限公司", city: "重庆", type: "direct", category: "诊所" },
+            { name: "北京丰联嘉悦丽格眼科诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "北京小忠丽格京顺医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "北京小忠嘉妍丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "深圳欢乐丽格医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "惠州市惠阳区丽港丽格医疗有限公司", city: "惠州", type: "direct", category: "诊所" },
+            { name: "北京联合丽格医疗美容门诊部有限公司", city: "北京", type: "direct", category: "门诊部" },
+            { name: "武汉小忠丽格医疗美容门诊部有限公司", city: "武汉", type: "direct", category: "门诊部" },
+            { name: "北京泰美杰丽格医疗美容诊所有限公司", city: "北京", type: "direct", category: "诊所" },
+            { name: "重庆小珂丽格医疗美容有限公司", city: "重庆", type: "direct", category: "诊所" },
+            { name: "上海联合丽格医疗美容门诊部有限公司", city: "上海", type: "direct", category: "门诊部" },
+            { name: "深圳卓越丽格医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "深圳小珂丽格福恬医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "广州丽港丽格医疗美容门诊部有限公司", city: "广州", type: "direct", category: "门诊部" },
+            { name: "广州小忠丽格医疗美容诊所有限公司", city: "广州", type: "direct", category: "诊所" },
+            { name: "成都高新小珂丽格医疗美容诊所有限公司", city: "成都", type: "direct", category: "诊所" },
+            { name: "北京冰新丽格医疗美容门诊部有限公司", city: "北京", type: "direct", category: "门诊部" },
+            { name: "都匀郑荃丽格医疗美容有限公司", city: "都匀", type: "direct", category: "诊所" },
+            { name: "武汉小忠丽格协同医疗美容门诊有限公司", city: "武汉", type: "direct", category: "门诊部" },
+            { name: "广州小珂丽格医疗美容诊所有限公司", city: "广州", type: "direct", category: "诊所" },
+            { name: "长沙郑荃丽格医疗美容诊所有限公司", city: "长沙", type: "direct", category: "诊所" },
+            { name: "深圳联合丽格蓝楹湾医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "深圳联合丽格文心医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "深圳宝安小珂丽格医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "重庆郑荃丽格黄金医疗美容有限公司", city: "重庆", type: "direct", category: "诊所" },
+            { name: "深圳南山香蜜丽格医疗美容诊所", city: "深圳", type: "direct", category: "诊所" },
+            { name: "上海卓栎丽格皮肤科门诊部有限公司", city: "上海", type: "direct", category: "门诊部" },
+            { name: "广州鲁春丽格医疗美容诊所有限公司", city: "广州", type: "direct", category: "诊所" },
+            { name: "上海爱尚丽格医疗美容门诊部有限责任公司", city: "上海", type: "direct", category: "门诊部" },
+            { name: "上海首尔丽格医疗美容医院有限公司", city: "上海", type: "direct", category: "医院" },
+            { name: "重庆联合丽格第五医疗美容医院有限公司", city: "重庆", type: "direct", category: "医院" },
+            { name: "天津联合丽格第三医疗美容医院有限公司", city: "天津", type: "direct", category: "医院" },
+            { name: "沈阳元美医疗美容有限公司", city: "沈阳", type: "direct", category: "诊所" },
+            { name: "北京联合丽格第二医疗美容医院有限公司", city: "北京", type: "direct", category: "医院" },
+            { name: "杭州联合丽格第六医疗美容医院有限公司", city: "杭州", type: "direct", category: "医院" },
+            { name: "成都成华小珂丽格医疗美容诊所有限公司", city: "成都", type: "direct", category: "诊所" }
+        ];
+
+        const franchiseOrgs = [
+            { name: "恩施天后丽格整形外科医院有限公司", city: "恩施", type: "franchise", category: "医院" },
+            { name: "温州鹿城小鹿丽格医疗美容诊所有限公司", city: "温州", type: "franchise", category: "诊所" },
+            { name: "郑州小颜丽格医疗美容有限公司", city: "郑州", type: "franchise", category: "诊所" },
+            { name: "合肥台美丽格医疗美容门诊部有限公司", city: "合肥", type: "franchise", category: "门诊部" },
+            { name: "博尔丽格医疗美容（内蒙古）有限责任公司", city: "呼和浩特", type: "franchise", category: "诊所" },
+            { name: "武汉十年丽格医疗美容诊所有限公司", city: "武汉", type: "franchise", category: "诊所" },
+            { name: "武汉涵美丽格医疗美容门诊有限责任公司", city: "武汉", type: "franchise", category: "门诊部" },
+            { name: "长沙珀斐丽格医疗美容有限公司", city: "长沙", type: "franchise", category: "门诊部" },
+            { name: "南京美婳丽格医疗美容诊所有限公司", city: "南京", type: "franchise", category: "诊所" },
+            { name: "淮安唯尔美丽格医疗美容有限公司", city: "淮安", type: "franchise", category: "门诊部" },
+            { name: "西安青春丽格医疗美容有限公司", city: "西安", type: "franchise", category: "诊所" },
+            { name: "萍乡市星悦丽格医疗美容有限公司", city: "萍乡", type: "franchise", category: "诊所" },
+            { name: "长沙星城丽格医疗美容有限公司", city: "长沙", type: "franchise", category: "诊所" },
+            { name: "厦门小忠婧妍丽格医疗美容有限公司", city: "厦门", type: "franchise", category: "诊所" },
+            { name: "北京唯颜丽格医疗美容诊所有限公司", city: "北京", type: "franchise", category: "诊所" },
+            { name: "呼和浩特张高贵青城丽格医疗美容有限责任公司", city: "呼和浩特", type: "franchise", category: "门诊部" },
+            { name: "深圳罗文丽格医疗美容诊所", city: "深圳", type: "franchise", category: "诊所" },
+            { name: "深圳欣安丽格医疗美容诊所", city: "深圳", type: "franchise", category: "诊所" },
+            { name: "郑州圣熙丽格美容服务有限公司", city: "郑州", type: "franchise", category: "门诊部" },
+            { name: "慈溪丽尔丽格医疗美容诊所有限公司", city: "慈溪", type: "franchise", category: "诊所" },
+            { name: "太原善美丽格医疗美容有限责任公司", city: "太原", type: "franchise", category: "门诊部" },
+            { name: "乌鲁木齐世美丽格医疗器械有限公司天山区世美丽格诊所", city: "乌鲁木齐", type: "franchise", category: "诊所" },
+            { name: "长治市星范丽格医疗美容有限公司", city: "长治", type: "franchise", category: "诊所" },
+            { name: "上海爱丽姿医疗美容医院有限公司", city: "上海", type: "franchise", category: "医院" },
+            { name: "东莞市丽美丽格医疗美容门诊部有限公司", city: "东莞", type: "franchise", category: "门诊部" },
+            { name: "青岛星美国际医疗健康产业有限公司市南柏丽医疗美容门诊部", city: "青岛", type: "franchise", category: "门诊部" },
+            { name: "郑州朝蕾丽格医疗美容有限公司", city: "郑州", type: "franchise", category: "门诊部" },
+            { name: "郑州小鲸丽格美容有限公司", city: "郑州", type: "franchise", category: "诊所" },
+            { name: "深圳即美丽格医疗美容诊所", city: "深圳", type: "franchise", category: "诊所" },
+            { name: "高阳美康丽格医疗美容诊所（个体工商户）", city: "高阳", type: "franchise", category: "诊所" },
+            { name: "内蒙古华医小庆丽格医疗美容有限公司", city: "呼和浩特", type: "franchise", category: "门诊部" },
+            { name: "石家庄天悦丽格医疗美容门诊部", city: "石家庄", type: "franchise", category: "门诊部" },
+            { name: "湖北虹美丽格医疗服务有限公司", city: "孝感", type: "franchise", category: "诊所" },
+            { name: "盘锦市兴隆台区左右丽格医疗美容诊所（个体工商户）", city: "盘锦", type: "franchise", category: "诊所" },
+            { name: "河南纽斯恩美容服务有限公司", city: "郑州", type: "franchise", category: "诊所" },
+            { name: "三门峡美星嘉美医疗美容有限公司", city: "三门峡", type: "franchise", category: "诊所" },
+            { name: "福州莳肌医疗美容诊所有限公司", city: "福州", type: "franchise", category: "诊所" },
+            { name: "芜湖柠育丽格医疗美容有限公司", city: "芜湖", type: "franchise", category: "诊所" },
+            { name: "河南精蝶丽格医疗美容有限公司", city: "郑州", type: "franchise", category: "诊所" },
+            { name: "河南锐丽凯医疗美容有限公司", city: "郑州", type: "franchise", category: "诊所" },
+            { name: "河南元哲丽格医疗美容有限公司", city: "郑州", type: "franchise", category: "门诊部" },
+            { name: "城关区姜一生丽格医疗美容诊所", city: "兰州", type: "franchise", category: "诊所" },
+            { name: "郴州市美科医疗美容有限公司", city: "郴州", type: "franchise", category: "诊所" },
+            { name: "衢州柯城卓艺丽格医疗美容诊所有限公司", city: "衢州", type: "franchise", category: "诊所" },
+            { name: "周口市臻美丽格医疗管理有限公司", city: "周口", type: "franchise", category: "诊所" },
+            { name: "漯河市丽象美医医疗美容有限公司", city: "漯河", type: "franchise", category: "诊所" },
+            { name: "商丘瑞颜丽格医疗美容有限公司", city: "商丘", type: "franchise", category: "诊所" },
+            { name: "廊坊市星范医疗美容有限公司", city: "廊坊", type: "franchise", category: "门诊部" },
+            { name: "南宁丽美医疗美容门诊部有限公司", city: "南宁", type: "franchise", category: "门诊部" },
+            { name: "乐山模漾医疗美容门诊部有限公司", city: "乐山", type: "franchise", category: "门诊部" },
+            { name: "汝州市溱美医疗美容有限公司", city: "汝州", type: "franchise", category: "诊所" },
+            { name: "湖州林华丽格医疗美容诊所有限公司", city: "湖州", type: "franchise", category: "诊所" },
+            { name: "沈阳和平鑫元辰医疗美容门诊部有限公司", city: "沈阳", type: "franchise", category: "门诊部" },
+            { name: "荆州市魔龄丽格医疗美容有限公司", city: "荆州", type: "franchise", category: "诊所" },
+            { name: "昆山至善可人医疗美容诊所有限公司", city: "昆山", type: "franchise", category: "诊所" },
+            { name: "神木市艾美丽格医疗美容诊所（个体工商户）", city: "神木", type: "franchise", category: "诊所" },
+            { name: "西安佳钰医疗美容诊所有限公司", city: "西安", type: "franchise", category: "诊所" },
+            { name: "河南美葩医疗服务有限公司", city: "郑州", type: "franchise", category: "诊所" },
+            { name: "保山福惠丽格健康咨询有限公司", city: "保山", type: "franchise", category: "诊所" },
+            { name: "郸城县中医院", city: "郸城", type: "franchise", category: "诊所" },
+            { name: "武汉珍妮丽格医疗美容有限公司", city: "武汉", type: "franchise", category: "门诊部" },
+            { name: "仙桃市美兮丽格医疗美容有限公司", city: "仙桃", type: "franchise", category: "诊所" },
+            { name: "丝可蕊敏医疗美容诊所（广州）有限公司", city: "广州", type: "franchise", category: "诊所" },
+            { name: "邢台臻悦医疗美容有限公司", city: "邢台", type: "franchise", category: "诊所" },
+            { name: "巢湖市康攸美美容有限公司", city: "巢湖", type: "franchise", category: "诊所" },
+            { name: "南阳市轻颜致美医疗美容有限公司", city: "南阳", type: "franchise", category: "诊所" },
+            { name: "许昌博爱医院", city: "许昌", type: "franchise", category: "医院" },
+            { name: "清镇荷雨霏医疗美容有限公司", city: "清镇", type: "franchise", category: "诊所" },
+            { name: "淮安肌光水光猫医疗管理有限公司", city: "淮安", type: "franchise", category: "诊所" },
+            { name: "梅朵（北京）医疗美容诊所有限公司", city: "北京", type: "franchise", category: "诊所" },
+            { name: "宁波海曙颜熙悦容医疗美容诊所有限公司", city: "宁波", type: "franchise", category: "诊所" },
+            { name: "西双版纳纳美纳颜医疗美容有限公司", city: "西双版纳", type: "franchise", category: "门诊部" },
+            { name: "焦作市山阳区陶子医疗美容门诊部", city: "焦作", type: "franchise", category: "门诊部" },
+            { name: "钟祥市十星医疗美容有限公司", city: "钟祥", type: "franchise", category: "诊所" },
+            { name: "襄阳思蓝丽格医疗美容门诊有限公司", city: "襄阳", type: "franchise", category: "门诊部" },
+            { name: "唐山星范丽格医疗美容诊所有限公司", city: "唐山", type: "franchise", category: "门诊部" },
+            { name: "新疆瑞红丽格医疗美容有限公司", city: "乌鲁木齐", type: "franchise", category: "诊所" },
+            { name: "重庆佳美丽格医疗美容诊所管理有限公司", city: "重庆", type: "franchise", category: "诊所" },
+            { name: "宁波鄞州芊蕊医疗美容门诊部有限公司", city: "宁波", type: "franchise", category: "门诊部" },
+            { name: "张家界市永定区达妍丽格医疗美容有限公司", city: "张家界", type: "franchise", category: "诊所" },
+            { name: "山西天姿美容服务有限公司", city: "山西", type: "franchise", category: "诊所" },
+            { name: "武汉铂雅丽格医疗美容门诊有限公司", city: "武汉", type: "franchise", category: "诊所" },
+            { name: "开封爱丽莎医疗整形", city: "开封", type: "franchise", category: "诊所" },
+            { name: "苏州工业园区希优医疗美容诊所有限公司", city: "苏州", type: "franchise", category: "诊所" },
+            { name: "杭州星秘医疗美容", city: "杭州", type: "franchise", category: "诊所" },
+            { name: "台州路桥丽雅丽格医疗美容有限公司", city: "台州", type: "franchise", category: "诊所" },
+            { name: "榆林美丽方之星医疗美容医院有限公司", city: "榆林", type: "franchise", category: "医院" },
+            { name: "太原美兮医疗美容诊所", city: "太原", type: "franchise", category: "诊所" },
+            { name: "郑州妍玺丽格医疗科技有限公司", city: "郑州", type: "franchise", category: "诊所" },
+            { name: "宜宾天使模漾医疗美容门诊部有限公司", city: "宜宾", type: "franchise", category: "诊所" },
+            { name: "北京子彦丽格医疗美容诊所有限公司", city: "北京", type: "franchise", category: "诊所" },
+            { name: "宁波江北梵容医疗美容诊所", city: "宁波", type: "franchise", category: "诊所" },
+            { name: "海丽丽格医疗美容诊所（邯郸市）有限公司", city: "邯郸", type: "franchise", category: "诊所" },
+            { name: "沈阳美梵希丽格医疗美容有限公司铁西兴工医疗美容诊所", city: "沈阳", type: "franchise", category: "诊所" },
+            { name: "葫芦岛颜图丽格医疗美容门诊部有限公司", city: "葫芦岛", type: "franchise", category: "门诊部" },
+            { name: "武汉市妤琦丽格医疗美容诊所有限公司", city: "武汉", type: "franchise", category: "诊所" },
+            { name: "北京同林堂生物技术开发中心简知医疗美容诊所", city: "北京", type: "franchise", category: "诊所" },
+            { name: "东莞市虎门雅乔丽格医疗美容诊所有限公司", city: "东莞", type: "franchise", category: "诊所" },
+            { name: "淄博爱颜医疗服务有限公司", city: "淄博", type: "franchise", category: "门诊部" },
+            { name: "济宁名美丽格美容整形医院有限公司", city: "济宁", type: "franchise", category: "医院" },
+            { name: "襄阳市雅美丽格医疗美容有限公司", city: "襄阳", type: "franchise", category: "诊所" },
+            { name: "三河市安和医疗美容诊所有限公司", city: "三河", type: "franchise", category: "诊所" },
+            { name: "石家庄睿恒阳医疗服务有限公司正定华安西路医疗美容诊所", city: "石家庄", type: "franchise", category: "诊所" },
+            { name: "长春盛轻颜医疗美容有限公司净月盛轻颜丽格医疗美容诊所", city: "长春", type: "franchise", category: "诊所" },
+            { name: "天门白年医疗美容门诊有限公司", city: "天门", type: "franchise", category: "门诊部" },
+            { name: "泸州江阳区西韩医疗美容诊所有限公司", city: "泸州", type: "franchise", category: "诊所" },
+            { name: "青岛元美医疗管理咨询有限公司市南元美医疗美容门诊部", city: "青岛", type: "franchise", category: "门诊部" },
+            { name: "南昌必德肤医疗美容有限公司青山湖医疗美容诊所", city: "南昌", type: "franchise", category: "诊所" },
+            { name: "北京爱琴海医疗科技有限公司朗丽嘉美容诊所", city: "北京", type: "franchise", category: "诊所" },
+            { name: "天津修赋丽格医疗美容门诊有限公司", city: "天津", type: "franchise", category: "门诊部" },
+            { name: "黑龙江亿美医疗美容管理有限公司", city: "哈尔滨", type: "franchise", category: "诊所" },
+            { name: "枣庄津汇丽格医疗科技有限公司", city: "枣庄", type: "franchise", category: "门诊部" },
+            { name: "信阳紫晗丽格医疗美容诊所", city: "信阳", type: "franchise", category: "诊所" },
+            { name: "无锡即美丽格医疗美容诊所有限公司", city: "无锡", type: "franchise", category: "诊所" },
+            { name: "臻颜医疗美容诊所（烟台）有限公司", city: "烟台", type: "franchise", category: "诊所" },
+            { name: "公安县魔龄驻颜医疗美容有限公司", city: "公安", type: "franchise", category: "诊所" },
+            { name: "南昌素妍悦熙丽格医疗美容有限公司", city: "南昌", type: "franchise", category: "诊所" },
+            { name: "广西颜白玉医疗美容有限公司", city: "广西", type: "franchise", category: "诊所" },
+            { name: "德州凯琳华颜美医疗美容有限公司", city: "德州", type: "franchise", category: "门诊部" },
+            { name: "遵义市红花岗区章超丽格医疗美容有限公司", city: "遵义", type: "franchise", category: "诊所" },
+            { name: "成都武侯伊姿依美医疗美容诊所有限公司", city: "成都", type: "franchise", category: "诊所" },
+            { name: "东阳米瑞珂医疗美容诊所有限公司", city: "东阳", type: "franchise", category: "诊所" },
+            { name: "西宁柏美优嘉青橙医疗美容诊所", city: "西宁", type: "franchise", category: "诊所" },
+            { name: "山西临汾雅美整形美容门诊部", city: "临汾", type: "franchise", category: "门诊部" },
+            { name: "常德伊丽莎白整形美容医院有限公司", city: "常德", type: "franchise", category: "医院" },
+            { name: "清河县臻美医疗美容诊所", city: "清河", type: "franchise", category: "诊所" },
+            { name: "成都高新陈波丽格医疗美容诊所有限公司", city: "成都", type: "franchise", category: "诊所" },
+            { name: "烟台莱山区采采医疗美容诊所有限公司", city: "烟台", type: "franchise", category: "诊所" },
+            { name: "北京佳京丽格医疗美容门诊部有限公司", city: "北京", type: "franchise", category: "门诊部" },
+            { name: "星雅丽格（惠州）医疗美容有限公司", city: "惠州", type: "franchise", category: "诊所" },
+            { name: "新疆星耀医疗美容有限公司 （加盟取消）", city: "乌鲁木齐", type: "franchise", category: "诊所" },
+            { name: "蒙城美客丽格医疗美容有限公司", city: "蒙城", type: "franchise", category: "诊所" },
+            { name: "昆明医瑞诗医疗美容诊所有限公司官渡周建波医疗美容诊所", city: "昆明", type: "franchise", category: "诊所" },
+            { name: "汉中佳佰丽医疗美容有限公司", city: "汉中", type: "franchise", category: "诊所" },
+            { name: "嘉兴星禾丽格医疗美容诊所有限公司", city: "嘉兴", type: "franchise", category: "诊所" },
+            { name: "库尔勒市天姿医疗美容服务有限公司", city: "库尔勒", type: "franchise", category: "门诊部" },
+            { name: "青岛艾戴克医学美容管理有限公司艾戴克医疗美容诊所", city: "青岛", type: "franchise", category: "诊所" },
+            { name: "吉林市星范丽格医疗美容有限公司", city: "吉林", type: "franchise", category: "门诊部" },
+            { name: "杭州俏颜医疗美容诊所有限公司", city: "杭州", type: "franchise", category: "诊所" },
+            { name: "临沂兰山小娅倾城医疗美容门诊部有限公司", city: "临沂", type: "franchise", category: "门诊部" },
+            { name: "珠海花仙姿医疗美容服务有限公司", city: "珠海", type: "franchise", category: "门诊部" },
+            { name: "营口娇颜医疗美容诊所有限公司", city: "营口", type: "franchise", category: "诊所" },
+            { name: "成都天府新区初理医疗美容诊所有限公司", city: "成都", type: "franchise", category: "诊所" },
+            { name: "宿迁奕星医疗美容有限公司", city: "宿迁", type: "franchise", category: "诊所" },
+            { name: "长春揽琇医疗美容有限公司净月揽琇医疗美容诊所", city: "长春", type: "franchise", category: "诊所" },
+            { name: "郑州丽人医疗美容服务有限公司", city: "郑州", type: "franchise", category: "门诊部" },
+            { name: "太原昕雅医疗美容有限公司", city: "太原", type: "franchise", category: "诊所" },
+            { name: "北京品塑医疗美容诊所有限公司", city: "北京（顺义区）", type: "franchise", category: "诊所" },
+            { name: "哈尔滨蓝依丽格医疗美容诊所有限公司", city: "哈尔滨", type: "franchise", category: "诊所" },
+            { name: "内蒙古夏天时光医疗美容有限公司", city: "呼和浩特", type: "franchise", category: "诊所" },
+            { name: "昌吉市美黛海棠医疗整形美容诊所", city: "昌吉", type: "franchise", category: "诊所" },
+            { name: "北京香榭丽格医疗美容诊所有限公司", city: "北京（海淀）", type: "franchise", category: "诊所" },
+            { name: "中山市臻悦丽格医疗美容有限公司", city: "中山", type: "franchise", category: "诊所" },
+            { name: "献县刘现月诊所", city: "沧州", type: "franchise", category: "诊所" },
+            { name: "宸宇医疗美容诊所（天津）有限公司", city: "天津", type: "franchise", category: "诊所" },
+            { name: "平顶山纳妍合君医学技术有限公司", city: "平顶山", type: "franchise", category: "诊所" },
+            { name: "东莞塘厦贝芙丽医疗美容诊所有限公司", city: "东莞", type: "franchise", category: "诊所" },
+            { name: "医莱新美思（天津）医疗美容门诊有限公司", city: "天津", type: "franchise", category: "门诊部" },
+            { name: "河南星媛医学美容门诊有限公司", city: "郑州", type: "franchise", category: "门诊部" },
+            { name: "成都高新锦慕星颜医疗美容诊所有限公司", city: "成都", type: "franchise", category: "诊所" },
+            { name: "哈尔滨海纳丽格医疗美容诊所有限公司", city: "哈尔滨", type: "franchise", category: "诊所" },
+            { name: "岳阳市岳阳楼区芯美丽格医疗美容有限公司", city: "岳阳", type: "franchise", category: "诊所" },
+            { name: "武穴逆时光医疗美容诊所", city: "武穴", type: "franchise", category: "诊所" },
+            { name: "石家庄乐氏聚美医疗美容诊所有限公司裕华医疗美容诊所", city: "石家庄", type: "franchise", category: "诊所" },
+            { name: "杭州萧山瑞颜医疗美容门诊部有限公司", city: "杭州", type: "franchise", category: "门诊部" },
+            { name: "义乌丽莱医疗管理有限公司望道路医疗美容诊所", city: "义乌", type: "franchise", category: "诊所" },
+            { name: "任丘逻丽医疗美容诊所", city: "任丘", type: "franchise", category: "诊所" },
+            { name: "运城市盐湖区星悦红梅医疗美容诊所有限公司", city: "运城", type: "franchise", category: "诊所" },
+            { name: "大连康侨丽格医疗美容诊所有限公司", city: "大连", type: "franchise", category: "诊所" },
+            { name: "芜湖咛萌双美医疗美容有限公司", city: "芜湖", type: "franchise", category: "诊所" },
+            { name: "深圳艾可红山医疗美容诊所", city: "深圳", type: "franchise", category: "诊所" },
+            { name: "鄂尔多斯市明靓医疗美容诊所有限公司", city: "鄂尔多斯", type: "franchise", category: "诊所" },
+            { name: "内蒙古沐彦丽格医疗美容诊所有限公司", city: "呼和浩特", type: "franchise", category: "诊所" },
+            { name: "庆阳润百灵医疗美容诊所", city: "庆阳", type: "franchise", category: "诊所" },
+            { name: "廊坊艾美整形医疗美容有限公司", city: "廊坊", type: "franchise", category: "门诊部" },
+            { name: "武汉臻吉医疗美容诊所有限公司", city: "武汉", type: "franchise", category: "诊所" },
+            { name: "北京敏茹丽格医疗美容门诊部有限公司", city: "北京", type: "franchise", category: "门诊部" },
+            { name: "牡丹江市西安区莎莎医疗美容诊所", city: "牡丹江", type: "franchise", category: "诊所" },
+            { name: "四川御嘉美医疗美容诊所有限公司", city: "成都", type: "franchise", category: "诊所" },
+            { name: "龙口市锦秀成美医疗美容门诊部", city: "龙口", type: "franchise", category: "门诊部" },
+            { name: "衡阳时光好医疗美容有限公司", city: "衡阳", type: "franchise", category: "门诊部" },
+            { name: "黄石悦目时光医疗美容有限公司", city: "黄石", type: "franchise", category: "门诊部" },
+            { name: "锦州安妍医疗美容门诊有限公司", city: "锦州", type: "franchise", category: "门诊部" },
+            { name: "海南瑷美俪丽格医疗美容有限公司", city: "海口", type: "franchise", category: "诊所" },
+            { name: "灵宝熙美丽格医疗美容有限公司", city: "灵宝", type: "franchise", category: "诊所" },
+            { name: "河南河大医疗整形有限公司（永城市焕颜丽格医疗美容有限公司）", city: "永城", type: "franchise", category: "诊所" },
+            { name: "荆州名涵丽格健康科技有限公司", city: "荆州", type: "franchise", category: "门诊部" },
+            { name: "东莞何晓丹医疗美容诊所", city: "东莞", type: "franchise", category: "诊所" },
+            { name: "黄陂区雅美汇医疗美容门诊部（更名武汉雅美丽格医疗美容诊所有限公司）", city: "武汉", type: "franchise", category: "门诊部" },
+            { name: "重庆郑荃丽格青春医疗美容门诊部有限公司", city: "重庆", type: "franchise", category: "门诊部" },
+            { name: "潢川县文溪丽格美容服务有限公司", city: "信阳", type: "franchise", category: "诊所" },
+            { name: "成都时研丽格医疗美容诊所", city: "成都", type: "franchise", category: "诊所" },
+            { name: "西安颜途有你医疗美容诊所有限公司雅塔区医疗美容诊所", city: "西安", type: "franchise", category: "诊所" },
+            { name: "常德丽星整形医疗美容诊所（普通合伙）", city: "常德", type: "franchise", category: "门诊部" },
+            { name: "邵阳菁柠丽尔医疗美容有限公司", city: "邵阳", type: "franchise", category: "门诊部" },
+            { name: "重庆米洛诊所管理连锁有限责任公司江北医疗美容诊所", city: "重庆", type: "franchise", category: "诊所" },
+            { name: "成都锦江小鸥医疗美容诊所", city: "成都", type: "franchise", category: "诊所" },
+            { name: "重庆米洛一禾医疗美容诊所有限公司", city: "重庆", type: "franchise", category: "诊所" },
+            { name: "临沂铂颜医疗美容有限公司临沂兰山医疗美容诊所", city: "临沂", type: "franchise", category: "诊所" },
+            { name: "阳泉韩亚医疗美容服务有限公司", city: "阳泉", type: "franchise", category: "诊所" },
+            { name: "四川因恩因禾医疗美容诊所有限责任公司", city: "成都", type: "franchise", category: "诊所" },
+            { name: "天津市靓亮医疗美容诊所有限责任公司", city: "天津", type: "franchise", category: "诊所" },
+            { name: "青岛芊贝医疗美容有限公司芊贝医疗美容诊所", city: "青岛", type: "franchise", category: "诊所" },
+            { name: "内蒙古圣颜医疗美容有限公司", city: "通辽", type: "franchise", category: "门诊部" },
+            { name: "宁波江北颜熙丽格医疗美容诊所有限公司", city: "宁波", type: "franchise", category: "诊所" },
+            { name: "信阳东方艺美容医院", city: "信阳", type: "franchise", category: "医院" },
+            { name: "汝州珂妍医疗美容门诊部", city: "汝州", type: "franchise", category: "门诊部" },
+            { name: "北京对镜美学医疗美容诊所有限公司", city: "北京", type: "franchise", category: "诊所" },
+            { name: "三亚栀适医疗美容诊所有限公司", city: "三亚", type: "franchise", category: "诊所" },
+        ];
+        let allOrgs = [...directOrgs, ...franchiseOrgs];
+
+        // 城市坐标
+        const cityCoords = {
+            "三亚": [109.5122, 18.2524],
+            "三明": [117.6352, 26.2654],
+            "三河": [116.842, 39.763],
+            "三门峡": [111.1941, 34.7735],
+            "上饶": [117.9434, 28.4556],
+            "东莞": [113.7516, 23.0207],
+            "东阳": [120.0908, 29.3086],
+            "中山": [113.3926, 22.5171],
+            "临汾": [111.5189, 36.088],
+            "临沂": [118.3511, 35.1046],
+            "丽江": [100.2291, 26.8754],
+            "乌兰察布": [113.1145, 40.9946],
+            "乌鲁木齐": [87.6168, 43.8256],
+            "乐山": [103.7656, 29.5872],
+            "九江": [115.993, 29.705],
+            "亳州": [115.7783, 33.8693],
+            "仙桃": [113.444, 30.326],
+            "佳木斯": [130.3617, 46.83],
+            "保定": [115.4648, 38.8738],
+            "保山": [99.161, 25.112],
+            "信阳": [114.0913, 32.1474],
+            "儋州": [109.5767, 19.5174],
+            "公安县": [112.2329, 30.0588],
+            "六盘水": [104.8305, 26.5918],
+            "兰州": [103.8343, 36.0611],
+            "包头": [110.001, 40.6574],
+            "北海": [109.1196, 21.4812],
+            "南充": [106.1106, 30.8378],
+            "南宁": [108.366, 22.817],
+            "南平": [118.1777, 26.6415],
+            "南昌": [115.8579, 28.6829],
+            "南阳": [112.5285, 33.0039],
+            "台州": [121.4288, 28.6563],
+            "吉安": [114.9926, 27.1138],
+            "吉林": [126.55, 43.837],
+            "周口": [114.6499, 33.6265],
+            "呼伦贝尔": [119.7659, 49.2122],
+            "咸阳": [108.7109, 34.3456],
+            "哈尔滨": [126.5349, 45.8038],
+            "唐山": [118.1754, 39.6351],
+            "商丘": [115.656, 34.414],
+            "嘉峪关": [98.2773, 39.7865],
+            "四平": [124.3504, 43.1666],
+            "大同": [113.2951, 40.0749],
+            "大庆": [125.1039, 46.5906],
+            "大理": [100.2237, 25.5969],
+            "天水": [105.7244, 34.5789],
+            "天门": [113.166, 30.653],
+            "太原": [112.5489, 37.8706],
+            "孝感": [113.9169, 30.9269],
+            "宁波": [121.544, 29.8683],
+            "安康": [109.0293, 32.6903],
+            "安阳": [114.3927, 36.0979],
+            "安顺": [105.9472, 26.2455],
+            "定西": [104.5997, 35.5814],
+            "宜宾": [104.643, 28.767],
+            "宜昌": [111.2867, 30.6918],
+            "宜春": [114.3916, 27.8114],
+            "宝鸡": [107.1449, 34.3616],
+            "宿迁": [118.2757, 33.963],
+            "岳阳": [113.0966, 29.3571],
+            "巢湖": [117.7735, 31.6071],
+            "巴彦淖尔": [107.4166, 40.7574],
+            "常州": [119.9742, 31.8116],
+            "常德": [111.6913, 29.0409],
+            "平凉": [106.6889, 35.5429],
+            "平顶山": [113.1927, 33.7663],
+            "庆阳": [107.6431, 35.7342],
+            "库尔勒": [86.1477, 41.7686],
+            "廊坊": [116.6838, 39.5384],
+            "延安": [109.4898, 36.5853],
+            "开封": [114.3075, 34.7971],
+            "张家界": [110.479, 29.117],
+            "张掖": [100.4496, 38.9259],
+            "徐州": [117.284, 34.2057],
+            "德州": [116.3575, 37.4342],
+            "德阳": [104.3984, 31.131],
+            "扬州": [119.4127, 32.3949],
+            "抚州": [116.3582, 27.9487],
+            "新乡": [113.9268, 35.3029],
+            "无锡": [120.3119, 31.4912],
+            "昆山": [120.952, 31.377],
+            "昆明": [102.832, 24.88],
+            "昌吉": [87.308, 44.0114],
+            "普洱": [100.966, 22.8252],
+            "曲靖": [103.7962, 25.4895],
+            "松原": [124.8254, 45.1411],
+            "枣庄": [117.3234, 34.8107],
+            "柳州": [109.4115, 24.3146],
+            "株洲": [113.1337, 27.8273],
+            "桂林": [110.2901, 25.2742],
+            "梧州": [111.2791, 23.4769],
+            "榆林": [109.7342, 38.2903],
+            "武威": [102.6347, 37.9283],
+            "毕节": [105.2883, 27.3021],
+            "永城": [116.4495, 33.9292],
+            "汉中": [107.023, 33.0677],
+            "汝州": [112.8434, 34.1554],
+            "沧州": [116.8388, 38.3043],
+            "泉州": [118.6754, 24.8741],
+            "泸州": [105.443, 28.889],
+            "洛阳": [112.434, 34.663],
+            "济宁": [116.5872, 35.4154],
+            "海东": [102.1028, 36.5029],
+            "海口": [110.331, 20.031],
+            "海西": [97.3708, 37.3747],
+            "淄博": [118.0548, 36.8135],
+            "清河县": [115.4066, 37.0582],
+            "清镇": [106.4682, 26.5371],
+            "渭南": [109.5096, 34.5024],
+            "湖州": [120.0867, 30.8943],
+            "湘潭": [112.9447, 27.8298],
+            "漯河": [114.046, 33.581],
+            "漳州": [117.6471, 24.5211],
+            "濮阳": [115.0294, 35.7615],
+            "灵宝": [110.896, 34.517],
+            "烟台": [121.4478, 37.4637],
+            "焦作": [113.2418, 35.2159],
+            "牡丹江": [129.6333, 44.5513],
+            "献县": [116.122, 38.1925],
+            "玉林": [110.181, 22.6367],
+            "玉溪": [102.5457, 24.3521],
+            "珠海": [113.5767, 22.2706],
+            "琼海": [110.4664, 19.2463],
+            "白城": [122.8389, 45.6197],
+            "白山": [126.4275, 41.9375],
+            "白银": [104.1387, 36.5452],
+            "百色": [106.6186, 23.9025],
+            "盘锦": [122.07, 41.119],
+            "石家庄": [114.5149, 38.0423],
+            "神木": [110.4864, 38.8351],
+            "福州": [119.2965, 26.0745],
+            "绵阳": [104.6417, 31.4678],
+            "芜湖": [118.3761, 31.3263],
+            "苏州": [120.585, 31.298],
+            "荆州": [112.241, 30.3355],
+            "荆门": [112.199, 31.035],
+            "莆田": [119.0078, 25.454],
+            "营口": [122.2351, 40.6678],
+            "葫芦岛": [120.8374, 40.743],
+            "衡阳": [112.5705, 26.8936],
+            "衢州": [118.8597, 28.97],
+            "襄阳": [112.1441, 32.009],
+            "西双版纳": [100.7979, 22.0017],
+            "西宁": [101.7782, 36.6171],
+            "许昌": [113.8523, 34.0357],
+            "贵港": [109.5988, 23.1115],
+            "贵阳": [106.6302, 26.6477],
+            "赣州": [114.9351, 25.8315],
+            "赤峰": [118.8869, 42.2575],
+            "辽源": [125.1453, 42.9027],
+            "连云港": [119.2216, 34.5967],
+            "通化": [125.9395, 41.7216],
+            "通辽": [122.2630, 43.6174],
+            "遵义": [106.9373, 27.7271],
+            "邢台": [114.5089, 37.0682],
+            "邯郸": [114.539, 36.6256],
+            "郴州": [113.0148, 25.7707],
+            "郸城县": [115.5488, 33.7316],
+            "鄂尔多斯": [109.7813, 39.6088],
+            "酒泉": [98.494, 39.7381],
+            "金华": [119.6475, 29.0875],
+            "金昌": [102.1878, 38.5203],
+            "钟祥": [112.5898, 31.1676],
+            "钦州": [108.654, 21.9794],
+            "长春": [125.3235, 43.8171],
+            "长治": [113.1163, 36.1954],
+            "陇南": [104.9216, 33.4011],
+            "青岛": [120.3826, 36.0671],
+            "高阳": [115.8296, 38.6846],
+            "鸡西": [130.9693, 45.2954],
+            "齐齐哈尔": [123.918, 47.3543],
+            "龙岩": [117.0176, 25.0787],
+            "邵阳": [111.4692, 27.2378],
+            "阳泉": [113.5803, 37.8569],
+            "北京": [116.4074, 39.9042], "上海": [121.4737, 31.2304], "深圳": [114.0579, 22.5431],
+            "广州": [113.2644, 23.1291], "重庆": [106.5516, 29.5628], "杭州": [120.1551, 30.2741],
+            "武汉": [114.3055, 30.5928], "成都": [104.0665, 30.5728], "天津": [117.2009, 39.0859],
+            "大连": [121.6147, 38.9170], "沈阳": [123.4315, 41.8057], "长沙": [112.9443, 28.2280],
+            "惠州": [114.4157, 23.1116], "都匀": [107.5232, 26.2594], "恩施": [109.4882, 30.2722],
+            "温州": [120.6996, 28.0006], "郑州": [113.6254, 34.7466], "合肥": [117.2830, 31.8612],
+            "内蒙古": [111.7492, 40.8424], "南京": [118.7969, 32.0603], "淮安": [119.0153, 33.6104],
+            "西安": [108.9543, 34.2664], "萍乡": [113.8546, 27.6229], "厦门": [118.0894, 24.4798],
+            "呼和浩特": [111.7497, 40.8427], "慈溪": [121.2665, 30.1692]
+        };
+
+        let currentType = 'all', currentRegion = 'all', searchKeyword = '';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initStats();
+            initMap();
+            initRegionFilters();
+            renderOrgList();
+        });
+
+        function initStats() {
+            const realOrgs = allOrgs.filter(org => org.category !== '待加盟');
+            const realDirect = directOrgs;
+            const realFranchise = franchiseOrgs.filter(org => org.category !== '待加盟');
+            const cities = [...new Set(realOrgs.map(o => o.city))].filter(c => c !== '全国').length;
+            const supplyChainCount = 25;
+            animateNumber('total-orgs', realOrgs.length + supplyChainCount);
+            animateNumber('direct-orgs', realDirect.length);
+            animateNumber('franchise-orgs', realFranchise.length);
+            animateNumber('city-count', cities);
+        }
+
+        function animateNumber(elementId, target) {
+            const el = document.getElementById(elementId);
+            let current = 0;
+            const increment = target / 30;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) { current = target; clearInterval(timer); }
+                el.textContent = Math.floor(current);
+            }, 30);
+        }
+
+        function initMap() {
+            const chart = echarts.init(document.getElementById('china-map'));
+            function doInit() {
+                if (!window.chinaMapLoaded) { setTimeout(doInit, 50); return; }
+                if (!echarts.getMap('china')) { console.error('地图未加载'); return; }
+                updateMap(chart);
+            }
+            doInit();
+            window.addEventListener('resize', () => chart.resize());
+        }
+
+        function updateMap(chart) {
+            const realOrgs = allOrgs.filter(org => org.category !== '待加盟');
+            const cityStats = {};
+            realOrgs.forEach(org => {
+                const city = org.city;
+                if (city === '全国') return;
+                if (!cityStats[city]) cityStats[city] = { total: 0, direct: 0, franchise: 0 };
+                cityStats[city].total++;
+                if (org.type === 'direct') cityStats[city].direct++;
+                else cityStats[city].franchise++;
+            });
+
+            const scatterData = Object.entries(cityStats).map(([city, stats]) => ({
+                name: city,
+                value: [...cityCoords[city] || [0,0], stats.total, stats.direct, stats.franchise],
+                cityStats: stats
+            })).filter(d => d.value[0] !== 0);
+
+            const option = {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'item',
+                    backgroundColor: 'rgba(255,255,255,0.95)',
+                    borderColor: '#0d2c54',
+                    borderWidth: 1,
+                    padding: 12,
+                    textStyle: { color: '#333' },
+                    formatter: function(params) {
+                        if (params.data && params.data.cityStats) {
+                            const city = params.name;
+                            const stats = params.data.cityStats;
+                            const cityOrgs = realOrgs.filter(o => o.city === city);
+                            const orgList = cityOrgs.slice(0, 4).map(o => `<div class="text-xs">${o.name}</div>`).join('');
+                            const more = cityOrgs.length > 4 ? `<div class="text-xs text-gray-400">...及其他${cityOrgs.length-4}家</div>` : '';
+                            return `<div style="min-width:180px">
+                                <div style="font-size:15px;font-weight:bold;color:#0d2c54;margin-bottom:8px;border-bottom:1px solid #e2e8f0;padding-bottom:6px;">${city}</div>
+                                <div style="font-size:13px;margin-bottom:6px;"><b>${stats.total}</b>家机构 <span class="text-gray-500">直营${stats.direct} | 加盟${stats.franchise}</span></div>
+                                <div style="margin-top:8px;">${orgList}${more}</div>
+                            </div>`;
+                        }
+                        return params.name;
+                    }
+                },
+                geo: {
+                    map: 'china',
+                    roam: true,
+                    zoom: 1.2,
+                    scaleLimit: { min: 1, max: 4 },
+                    label: { show: false },
+                    itemStyle: {
+                        areaColor: '#e8ecf0',
+                        borderColor: '#c5ccd6',
+                        borderWidth: 0.5
+                    },
+                    emphasis: {
+                        itemStyle: { areaColor: '#d0dbe5' },
+                        label: { show: false }
+                    }
+                },
+                series: [
+                    {
+                        name: '机构分布',
+                        type: 'scatter',
+                        coordinateSystem: 'geo',
+                        data: scatterData,
+                        symbol: 'circle',
+                        symbolSize: function(val) { return Math.max(8, Math.min(25, val[2] * 3)); },
+                        itemStyle: {
+                            color: function(params) {
+                                return params.value[3] / params.value[2] > 0.5 ? '#4a6fa5' : '#a67c52';
+                            },
+                            shadowBlur: 5,
+                            shadowColor: 'rgba(0,0,0,0.15)'
+                        },
+                        emphasis: { scale: 1.4 }
+                    },
+                    {
+                        type: 'effectScatter',
+                        coordinateSystem: 'geo',
+                        data: scatterData.filter(d => d.value[2] >= 5),
+                        symbol: 'circle',
+                        symbolSize: function(val) { return Math.max(10, Math.min(30, val[2] * 3)); },
+                        showEffectOn: 'render',
+                        rippleEffect: { brushType: 'stroke', scale: 2 },
+                        itemStyle: { color: '#4a6fa5', shadowBlur: 5, shadowColor: 'rgba(0,0,0,0.15)' },
+                        zlevel: 1
+                    }
+                ]
+            };
+            chart.setOption(option, true);
+            chart.on('click', function(params) {
+                if (params.name && cityStats[params.name]) {
+                    filterByRegion(params.name);
+                    document.getElementById('list-section').scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        }
+
+        function initRegionFilters() {
+            const realOrgs = allOrgs.filter(org => org.category !== '待加盟');
+            const regions = [...new Set(realOrgs.map(o => o.city))].sort();
+            const container = document.getElementById('region-filters');
+            regions.forEach(city => {
+                const btn = document.createElement('button');
+                btn.className = 'filter-btn px-4 py-2 rounded-full border border-gray-200 font-medium text-xs transition';
+                btn.dataset.region = city;
+                btn.onclick = () => filterByRegion(city);
+                btn.textContent = city;
+                container.appendChild(btn);
+            });
+        }
+
+        function filterByType(type) {
+            currentType = type;
+            document.querySelectorAll('.filter-btn[data-type]').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+                if (btn.dataset.type === type) {
+                    btn.style.backgroundColor = '#0d2c54';
+                    btn.style.color = 'white';
+                } else {
+                    btn.style.backgroundColor = '';
+                    btn.style.color = '';
+                }
+            });
+            renderOrgList();
+        }
+
+        function filterByRegion(region) {
+            currentRegion = region;
+            document.querySelectorAll('.filter-btn[data-region]').forEach(btn => {
+                const isActive = btn.dataset.region === region;
+                btn.classList.toggle('active', isActive);
+                btn.style.backgroundColor = isActive ? '#0d2c54' : '';
+                btn.style.color = isActive ? 'white' : '';
+            });
+            renderOrgList();
+        }
+
+        function searchOrgs(keyword) {
+            searchKeyword = keyword.toLowerCase();
+            renderOrgList();
+        }
+
+        function renderOrgList() {
+            const container = document.getElementById('org-list');
+            const noResult = document.getElementById('no-result');
+            let filtered = allOrgs.filter(org => {
+                const matchType = currentType === 'all' || org.type === currentType;
+                const matchRegion = currentRegion === 'all' || org.city === currentRegion;
+                const matchSearch = searchKeyword === '' || org.name.toLowerCase().includes(searchKeyword);
+                return matchType && matchRegion && matchSearch;
+            });
+            if (filtered.length === 0) {
+                container.innerHTML = '';
+                noResult.classList.remove('hidden');
+                return;
+            }
+            noResult.classList.add('hidden');
+            container.innerHTML = filtered.map(org => {
+                const bgColor = org.type === 'direct' ? 'bg-[#4a6fa5]' : 'bg-[#a67c52]';
+                const badgeColor = org.type === 'direct' ? 'bg-[#4a6fa5]' : 'bg-[#a67c52]';
+                return `<div class="org-card rounded-lg p-4 border border-gray-200 bg-white">
+                    <div class="flex items-start gap-3">
+                        <div class="${bgColor} w-10 h-10 rounded-lg flex items-center justify-center text-white shrink-0">
+                            <i class="fa-solid fa-hospital"></i>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <span class="px-2 py-0.5 rounded text-[10px] font-medium text-white ${badgeColor}">${org.type === 'direct' ? '直营' : '加盟'}</span>
+                            <h4 class="font-bold text-gray-800 leading-tight line-clamp-2 text-sm mt-2">${org.name}</h4>
+                            <p class="text-gray-500 text-xs mt-2"><i class="fa-solid fa-location-dot mr-1"></i>${org.city} · ${org.category}</p>
+                        </div>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            const icon = document.getElementById('menu-icon');
+            menu.classList.toggle('open');
+            icon.classList.toggle('fa-xmark');
+            icon.classList.toggle('fa-bars');
+        }
+
+        function handleShare() {
+            const qrImg = document.getElementById('share-qr');
+            bccSetQR(qrImg, window.location.href, '#4a6fa5');
+            document.getElementById('share-overlay').style.display = 'block';
+        }
+
+        function closeShare() {
+            document.getElementById('share-overlay').style.display = 'none';
+        }
+
+        function copyLink() {
+            navigator.clipboard.writeText(window.location.href).then(() => alert('链接已复制！'));
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeShare();
+        });
+    </script>
+</body>
+</html>
